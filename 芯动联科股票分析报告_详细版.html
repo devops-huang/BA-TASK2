@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芯动联科股票分析报告_详细版</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="indicators_data.js"></script>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            .chart-container {
+                break-inside: avoid;
+            }
+        }
+
+        body {
+            font-family: '宋体', SimSun, serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            text-align: justify;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 18pt;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid #4472C4;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th, table td {
+            border: 1px solid #666;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #808080;
+            color: white;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .chart-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .interpretation {
+            margin: 15px 0;
+            padding: 10px;
+            padding-left: 15px;
+            border-left: 4px solid #70AD47;
+            background-color: #f9f9f9;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border: 1px solid #4472C4;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+        }
+
+        .risk-item {
+            margin: 10px 0;
+            padding-left: 20px;
+            text-indent: -20px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>芯动联科（688582.SH）股票分析报告</h1>
+        <p style="text-align: center;">报告生成日期：<span id="reportDate"></span></p>
+
+        <!-- 一、公司简介 -->
+        <h2>一、公司简介</h2>
+        <table>
+            <tr>
+                <th>项目</th>
+                <th>内容</th>
+            </tr>
+            <tr>
+                <td>股票代码</td>
+                <td>688582.SH</td>
+            </tr>
+            <tr>
+                <td>股票简称</td>
+                <td>芯动联科</td>
+            </tr>
+            <tr>
+                <td>上市板块</td>
+                <td>科创板</td>
+            </tr>
+            <tr>
+                <td>所属行业</td>
+                <td>计算机、通信和其他电子设备制造业</td>
+            </tr>
+            <tr>
+                <td>主营业务</td>
+                <td>高性能MEMS惯性传感器研发、测试与销售</td>
+            </tr>
+            <tr>
+                <td>总股本（万股）</td>
+                <td id="totalShare">-</td>
+            </tr>
+            <tr>
+                <td>流通股本（万股）</td>
+                <td id="floatShare">-</td>
+            </tr>
+            <tr>
+                <td>总市值（亿元）</td>
+                <td id="totalMv">-</td>
+            </tr>
+        </table>
+
+        <!-- 二、数据统计摘要 -->
+        <h2 class="page-break">二、数据统计摘要</h2>
+
+        <h3>2.1 价格统计数据</h3>
+        <table>
+            <tr>
+                <th>指标</th>
+                <th>数值</th>
+            </tr>
+            <tr>
+                <td>期初价格（元）</td>
+                <td id="startPrice">-</td>
+            </tr>
+            <tr>
+                <td>期末价格（元）</td>
+                <td id="endPrice">-</td>
+            </tr>
+            <tr>
+                <td>期间涨跌幅（%）</td>
+                <td id="priceChange">-</td>
+            </tr>
+            <tr>
+                <td>最高价（元）</td>
+                <td id="maxPrice">-</td>
+            </tr>
+            <tr>
+                <td>最低价（元）</td>
+                <td id="minPrice">-</td>
+            </tr>
+            <tr>
+                <td>平均价（元）</td>
+                <td id="avgPrice">-</td>
+            </tr>
+            <tr>
+                <td>波动率（%）</td>
+                <td id="volatility">-</td>
+            </tr>
+        </table>
+
+        <h3>2.2 估值指标统计</h3>
+        <table>
+            <tr>
+                <th>指标</th>
+                <th>最新值</th>
+                <th>平均值</th>
+                <th>最大值</th>
+                <th>最小值</th>
+            </tr>
+            <tr>
+                <td>市盈率PE</td>
+                <td id="peLast">-</td>
+                <td id="peAvg">-</td>
+                <td id="peMax">-</td>
+                <td id="peMin">-</td>
+            </tr>
+            <tr>
+                <td>市净率PB</td>
+                <td id="pbLast">-</td>
+                <td id="pbAvg">-</td>
+                <td id="pbMax">-</td>
+                <td id="pbMin">-</td>
+            </tr>
+            <tr>
+                <td>市销率PS</td>
+                <td id="psLast">-</td>
+                <td id="psAvg">-</td>
+                <td id="psMax">-</td>
+                <td id="psMin">-</td>
+            </tr>
+            <tr>
+                <td>总市值（亿元）</td>
+                <td id="mvLast">-</td>
+                <td id="mvAvg">-</td>
+                <td id="mvMax">-</td>
+                <td id="mvMin">-</td>
+            </tr>
+        </table>
+
+        <!-- 三、K线分析 -->
+        <h2 class="page-break">三、K线分析</h2>
+
+        <div class="chart-container">
+            <div class="chart-title">图1：K线蜡烛图与均线分析</div>
+            <canvas id="klineChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>K线图展示了芯动联科股票在分析期间的价格走势。从图中可以观察到：
+                <br>1. 红色蜡烛表示当日收盘价高于开盘价（上涨），绿色蜡烛表示收盘价低于开盘价（下跌）。
+                <br>2. MA5、MA10、MA20、MA60四条均线反映了不同周期的平均成本。当短期均线向上穿过长期均线时，形成"金叉"，通常是买入信号；反之形成"死叉"，可能是卖出信号。
+                <br>3. 通过观察K线与均线的位置关系，可以判断当前趋势的强弱。当股价在均线上方运行时，说明趋势偏强；当股价在均线下方运行时，说明趋势偏弱。
+                <br>4. 投资者应结合成交量、市场情绪等多方面因素综合判断，避免单一依赖K线图做出投资决策。
+            </div>
+        </div>
+
+        <!-- 四、技术面分析 -->
+        <h2 class="page-break">四、技术面分析</h2>
+
+        <div class="chart-container">
+            <div class="chart-title">图2：MACD指标分析</div>
+            <canvas id="macdChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>MACD（指数平滑异同移动平均线）是重要的趋势跟踪指标。
+                <br>1. DIF线（快线）反映短期趋势，DEA线（慢线）反映中长期趋势。当DIF线上穿DEA线时形成"金叉"，为买入信号；当DIF线下穿DEA线时形成"死叉"，为卖出信号。
+                <br>2. MACD柱状图表示DIF与DEA的差值的两倍。柱状图由负变正时，市场可能由弱转强；由正变负时，市场可能由强转弱。
+                <br>3. 当MACD指标在零轴上方运行时，表明市场处于多头趋势；在零轴下方运行时，表明市场处于空头趋势。
+                <br>4. MACD背离现象值得关注：当股价创新高但MACD未创新高时，可能预示顶部来临；当股价创新低但MACD未创新低时，可能预示底部来临。
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">图3：RSI相对强弱指标</div>
+            <canvas id="rsiChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>RSI（相对强弱指标）用于衡量股价变动的速度和幅度，判断超买超卖状态。
+                <br>1. RSI取值范围为0-100。当RSI>70时，市场处于超买状态，股价可能面临回调压力；当RSI<30时，市场处于超卖状态，股价可能迎来反弹机会。
+                <br>2. RSI在50附近波动时，表明市场处于平衡状态，趋势不够明确。RSI持续在50以上运行时，表明市场偏强；持续在50以下运行时，表明市场偏弱。
+                <br>3. RSI背离现象同样值得关注：当股价创新高但RSI未创新高时，形成顶背离，预示可能下跌；当股价创新低但RSI未创新低时，形成底背离，预示可能上涨。
+                <br>4. RSI指标适合震荡市使用，在强趋势市场中可能出现"钝化"现象，需结合其他指标综合判断。
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">图4：KDJ随机指标</div>
+            <canvas id="kdjChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>KDJ指标是随机指标的衍生，用于判断股价的超买超卖状态。
+                <br>1. K值和D值的取值范围均为0-100。当K值和D值都大于80时，市场处于超买状态；当K值和D值都小于20时，市场处于超卖状态。
+                <br>2. J值可以大于100或小于0，反映市场情绪的极端程度。J值>100表明市场极度超买，J值<0表明市场极度超卖。
+                <br>3. 当K线向上穿过D线时形成"金叉"，为买入信号；当K线向下穿过D线时形成"死叉"，为卖出信号。金叉/死叉在超买超卖区域的效果更显著。
+                <br>4. KDJ指标反应灵敏，适合短线操作参考，但在盘整行情中可能出现频繁交叉，需结合趋势判断。
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">图5：布林带指标</div>
+            <canvas id="bollingerChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>布林带（Bollinger Bands）由三条轨道线组成，反映股价的波动范围和趋势。
+                <br>1. 上轨线和下轨线分别位于中轨线（20日均线）的上方和下方，距离为2倍标准差。布林带收窄时，表明市场波动减小，可能面临方向选择；布林带扩张时，表明市场波动加大。
+                <br>2. 当股价触及或突破上轨线时，市场可能处于超买状态；当股价触及或跌破下轨线时，市场可能处于超卖状态。但需注意，在强趋势中股价可能沿轨道线运行。
+                <br>3. 布林带中轨线（20日均线）是重要的支撑/阻力位。当股价在中轨线上方运行时，市场偏强；当股价在中轨线下方运行时，市场偏弱。
+                <br>4. 股价从下轨线反弹向上，或从上方回落至中轨线获得支撑，都可能是买入机会；反之则可能是卖出机会。
+            </div>
+        </div>
+
+        <!-- 五、基本面分析 -->
+        <h2 class="page-break">五、基本面分析</h2>
+
+        <div class="chart-container">
+            <div class="chart-title">图6：估值指标分析</div>
+            <canvas id="valuationChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>估值指标反映股票的价格是否合理，是投资决策的重要参考。
+                <br>1. 市盈率PE（Price-to-Earnings Ratio）反映投资者愿意为每单位盈利支付的价格。PE过高可能意味着股价被高估，PE过低可能意味着股价被低估或市场对公司前景悲观。
+                <br>2. 市净率PB（Price-to-Book Ratio）反映股价相对于每股净资产的倍数。PB<1时，股价低于净资产，可能被低估；PB过高时，需警惕泡沫风险。
+                <br>3. 市销率PS（Price-to-Sales Ratio）反映股价相对于每股销售收入的倍数，适合亏损或微利公司的估值参考。
+                <br>4. 总市值反映公司在股市中的规模。投资者应根据公司成长性、行业地位、竞争优势等因素，综合判断估值是否合理，避免单纯依赖某一指标。
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">图7：换手率和量比分析</div>
+            <canvas id="turnoverChart"></canvas>
+            <div class="interpretation">
+                <strong>解读：</strong>换手率和量比是反映股票流动性和市场热度的重要指标。
+                <br>1. 换手率反映一定时间内股票转手买卖的频率。换手率高，说明股票流动性好，市场关注度高；换手率低，说明股票交投清淡。不同行业、不同市值的股票，合理换手率水平不同。
+                <br>2. 量比反映当日成交量与过去一段时间平均成交量的比值。量比>1，说明当日成交量放大；量比<1，说明当日成交量萎缩。成交量的变化往往领先于价格变化。
+                <br>3. 高换手率配合股价上涨，可能是资金积极入场的信号；高换手率配合股价下跌，可能是资金集中出逃的信号。
+                <br>4. 投资者应关注换手率和量比的异常变化，结合价格走势和基本面情况，判断市场情绪和资金动向。
+            </div>
+        </div>
+
+        <!-- 六、技术指标统计分析 -->
+        <h2 class="page-break">六、技术指标统计分析</h2>
+
+        <table>
+            <tr>
+                <th>技术指标</th>
+                <th>当前值</th>
+                <th>状态</th>
+                <th>解读</th>
+            </tr>
+            <tr>
+                <td>MA5</td>
+                <td id="ma5Value">-</td>
+                <td id="ma5Status">-</td>
+                <td id="ma5Interpret">-</td>
+            </tr>
+            <tr>
+                <td>MA10</td>
+                <td id="ma10Value">-</td>
+                <td id="ma10Status">-</td>
+                <td id="ma10Interpret">-</td>
+            </tr>
+            <tr>
+                <td>MA20</td>
+                <td id="ma20Value">-</td>
+                <td id="ma20Status">-</td>
+                <td id="ma20Interpret">-</td>
+            </tr>
+            <tr>
+                <td>RSI(14)</td>
+                <td id="rsiValue">-</td>
+                <td id="rsiStatus">-</td>
+                <td id="rsiInterpret">-</td>
+            </tr>
+            <tr>
+                <td>MACD</td>
+                <td id="macdValue">-</td>
+                <td id="macdStatus">-</td>
+                <td id="macdInterpret">-</td>
+            </tr>
+            <tr>
+                <td>KDJ(K)</td>
+                <td id="kdjValue">-</td>
+                <td id="kdjStatus">-</td>
+                <td id="kdjInterpret">-</td>
+            </tr>
+            <tr>
+                <td>布林带</td>
+                <td id="bollValue">-</td>
+                <td id="bollStatus">-</td>
+                <td id="bollInterpret">-</td>
+            </tr>
+        </table>
+
+        <!-- 七、投资建议 -->
+        <h2 class="page-break">七、投资建议</h2>
+
+        <div class="info-box">
+            <h3>综合评估</h3>
+            <p id="investmentAdvice">正在生成投资建议...</p>
+        </div>
+
+        <div class="info-box">
+            <h3>操作建议</h3>
+            <ul id="operationAdvice">
+                <li>基于RSI指标分析...</li>
+                <li>基于MACD指标分析...</li>
+                <li>基于PE估值分析...</li>
+            </ul>
+        </div>
+
+        <!-- 八、风险提示 -->
+        <h2 class="page-break">八、风险提示</h2>
+
+        <div class="warning-box">
+            <div class="risk-item">1. <strong>市场风险：</strong>股票市场受宏观经济、政策变化、国际形势等多重因素影响，股价可能出现大幅波动，投资者可能面临本金损失风险。</div>
+            <div class="risk-item">2. <strong>行业风险：</strong>芯动联科所属的电子制造业受下游需求、技术迭代、供应链变化等因素影响，行业景气度变化可能影响公司业绩和股价表现。</div>
+            <div class="risk-item">3. <strong>估值风险：</strong>当前公司PE、PB等估值指标处于较高水平，若未来业绩增长不及预期，可能面临估值回调风险，股价可能出现较大幅度调整。</div>
+            <div class="risk-item">4. <strong>流动性风险：</strong>作为科创板股票，涨跌幅限制为20%，波动幅度大于主板股票。在市场极端情况下，可能面临买卖困难、无法及时止损等流动性风险。</div>
+            <div class="risk-item">5. <strong>技术风险：</strong>本报告基于历史数据和技术指标分析，不构成未来股价走势的确定性预测。技术指标存在滞后性，市场可能出现超预期变化，投资者应结合自身风险承受能力谨慎决策。</div>
+            <div class="risk-item" style="margin-top: 15px;"><strong>免责声明：</strong>本报告仅供参考，不构成投资建议。投资者应根据自身财务状况、风险承受能力和投资目标，谨慎做出投资决策。股市有风险，投资需谨慎。</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #666; font-size: 9pt;">
+            <p>报告结束</p>
+        </div>
+    </div>
+
+    <script>
+        // 设置报告日期
+        document.getElementById('reportDate').textContent = new Date().toLocaleDateString('zh-CN');
+
+        // 填充公司基本信息
+        if (basicData && basicData.length > 0) {
+            const latest = basicData[0];
+            document.getElementById('totalShare').textContent = (latest.total_share / 10000).toFixed(2);
+            document.getElementById('floatShare').textContent = (latest.float_share / 10000).toFixed(2);
+            document.getElementById('totalMv').textContent = (latest.total_mv / 10000).toFixed(2);
+        }
+
+        // 计算并填充价格统计数据
+        if (stockData && stockData.length > 0) {
+            const closes = stockData.map(d => d.close);
+            const highs = stockData.map(d => d.high);
+            const lows = stockData.map(d => d.low);
+
+            const startPrice = closes[0];
+            const endPrice = closes[closes.length - 1];
+            const priceChange = ((endPrice - startPrice) / startPrice * 100).toFixed(2);
+            const maxPrice = Math.max(...highs);
+            const minPrice = Math.min(...lows);
+            const avgPrice = (closes.reduce((a, b) => a + b, 0) / closes.length).toFixed(2);
+
+            // 计算波动率（标准差/平均值）
+            const variance = closes.reduce((sum, price) => sum + Math.pow(price - avgPrice, 2), 0) / closes.length;
+            const stdDev = Math.sqrt(variance);
+            const volatility = ((stdDev / avgPrice) * 100).toFixed(2);
+
+            document.getElementById('startPrice').textContent = startPrice;
+            document.getElementById('endPrice').textContent = endPrice;
+            document.getElementById('priceChange').textContent = priceChange + '%';
+            document.getElementById('priceChange').style.color = priceChange >= 0 ? 'red' : 'green';
+            document.getElementById('maxPrice').textContent = maxPrice;
+            document.getElementById('minPrice').textContent = minPrice;
+            document.getElementById('avgPrice').textContent = avgPrice;
+            document.getElementById('volatility').textContent = volatility + '%';
+        }
+
+        // 计算并填充估值指标统计
+        if (basicData && basicData.length > 0) {
+            const pes = basicData.map(d => d.pe).filter(v => v);
+            const pbs = basicData.map(d => d.pb).filter(v => v);
+            const pss = basicData.map(d => d.ps).filter(v => v);
+            const mvs = basicData.map(d => d.total_mv / 10000).filter(v => v);
+
+            document.getElementById('peLast').textContent = pes[0]?.toFixed(2);
+            document.getElementById('peAvg').textContent = (pes.reduce((a, b) => a + b, 0) / pes.length).toFixed(2);
+            document.getElementById('peMax').textContent = Math.max(...pes).toFixed(2);
+            document.getElementById('peMin').textContent = Math.min(...pes).toFixed(2);
+
+            document.getElementById('pbLast').textContent = pbs[0]?.toFixed(2);
+            document.getElementById('pbAvg').textContent = (pbs.reduce((a, b) => a + b, 0) / pbs.length).toFixed(2);
+            document.getElementById('pbMax').textContent = Math.max(...pbs).toFixed(2);
+            document.getElementById('pbMin').textContent = Math.min(...pbs).toFixed(2);
+
+            document.getElementById('psLast').textContent = pss[0]?.toFixed(2);
+            document.getElementById('psAvg').textContent = (pss.reduce((a, b) => a + b, 0) / pss.length).toFixed(2);
+            document.getElementById('psMax').textContent = Math.max(...pss).toFixed(2);
+            document.getElementById('psMin').textContent = Math.min(...pss).toFixed(2);
+
+            document.getElementById('mvLast').textContent = mvs[0]?.toFixed(2);
+            document.getElementById('mvAvg').textContent = (mvs.reduce((a, b) => a + b, 0) / mvs.length).toFixed(2);
+            document.getElementById('mvMax').textContent = Math.max(...mvs).toFixed(2);
+            document.getElementById('mvMin').textContent = Math.min(...mvs).toFixed(2);
+        }
+
+        // 准备图表数据
+        const dates = stockDates;
+        const chartColors = {
+            red: '#FF0000',
+            green: '#00AA00',
+            blue: '#4472C4',
+            orange: '#ED7D31',
+            purple: '#7030A0'
+        };
+
+        // 图1：K线图
+        const klineCtx = document.getElementById('klineChart').getContext('2d');
+        new Chart(klineCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '收盘价',
+                        data: stockData.map(d => d.close),
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'MA5',
+                        data: ma5Data,
+                        borderColor: '#FF8C00',
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'MA10',
+                        data: ma10Data,
+                        borderColor: chartColors.purple,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'MA20',
+                        data: ma20Data,
+                        borderColor: chartColors.green,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: '日期'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: '价格（元）'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 图2：MACD
+        const macdCtx = document.getElementById('macdChart').getContext('2d');
+        new Chart(macdCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'DIF',
+                        data: difData,
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'DEA',
+                        data: deaData,
+                        borderColor: chartColors.orange,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'MACD',
+                        data: macdData,
+                        type: 'bar',
+                        backgroundColor: macdData.map(v => v >= 0 ? chartColors.red : chartColors.green),
+                        borderColor: macdData.map(v => v >= 0 ? chartColors.red : chartColors.green),
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: false }
+                },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, title: { display: true, text: 'MACD' } }
+                }
+            }
+        });
+
+        // 图3：RSI
+        const rsiCtx = document.getElementById('rsiChart').getContext('2d');
+        new Chart(rsiCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'RSI(14)',
+                        data: rsiData,
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '超买线(70)',
+                        data: new Array(dates.length).fill(70),
+                        borderColor: chartColors.red,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [5, 5]
+                    },
+                    {
+                        label: '超卖线(30)',
+                        data: new Array(dates.length).fill(30),
+                        borderColor: chartColors.green,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: false } },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, min: 0, max: 100, title: { display: true, text: 'RSI' } }
+                }
+            }
+        });
+
+        // 图4：KDJ
+        const kdjCtx = document.getElementById('kdjChart').getContext('2d');
+        new Chart(kdjCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'K值',
+                        data: kData,
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'D值',
+                        data: dData,
+                        borderColor: chartColors.orange,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'J值',
+                        data: jData,
+                        borderColor: chartColors.purple,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: false } },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, title: { display: true, text: 'KDJ' } }
+                }
+            }
+        });
+
+        // 图5：布林带
+        const bollCtx = document.getElementById('bollingerChart').getContext('2d');
+        new Chart(bollCtx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '收盘价',
+                        data: stockData.map(d => d.close),
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '上轨',
+                        data: upperBandData,
+                        borderColor: chartColors.red,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [5, 5]
+                    },
+                    {
+                        label: '中轨(MA20)',
+                        data: middleBandData,
+                        borderColor: chartColors.orange,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '下轨',
+                        data: lowerBandData,
+                        borderColor: chartColors.green,
+                        backgroundColor: 'rgba(0, 170, 0, 0.1)',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        fill: {
+                            target: '-1',
+                            above: 'rgba(0, 170, 0, 0.1)',
+                            below: 'rgba(255, 0, 0, 0.1)'
+                        }
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: false } },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, title: { display: true, text: '价格（元）' } }
+                }
+            }
+        });
+
+        // 图6：估值指标
+        const valCtx = document.getElementById('valuationChart').getContext('2d');
+        new Chart(valCtx, {
+            type: 'line',
+            data: {
+                labels: basicData.map(d => d.trade_date).reverse(),
+                datasets: [
+                    {
+                        label: 'PE',
+                        data: basicData.map(d => d.pe).reverse(),
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'PB',
+                        data: basicData.map(d => d.pb).reverse(),
+                        borderColor: chartColors.orange,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: false } },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, type: 'linear', position: 'left', title: { display: true, text: 'PE' } },
+                    y1: { display: true, type: 'linear', position: 'right', title: { display: true, text: 'PB' }, grid: { drawOnChartArea: false } }
+                }
+            }
+        });
+
+        // 图7：换手率和量比
+        const turnCtx = document.getElementById('turnoverChart').getContext('2d');
+        new Chart(turnCtx, {
+            type: 'line',
+            data: {
+                labels: basicData.map(d => d.trade_date).reverse(),
+                datasets: [
+                    {
+                        label: '换手率(%)',
+                        data: basicData.map(d => d.turnover_rate).reverse(),
+                        borderColor: chartColors.blue,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '量比',
+                        data: basicData.map(d => d.volume_ratio).reverse(),
+                        borderColor: chartColors.orange,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: false } },
+                scales: {
+                    x: { display: true, title: { display: true, text: '日期' } },
+                    y: { display: true, type: 'linear', position: 'left', title: { display: true, text: '换手率(%)' } },
+                    y1: { display: true, type: 'linear', position: 'right', title: { display: true, text: '量比' }, grid: { drawOnChartArea: false } }
+                }
+            }
+        });
+
+        // 填充技术指标统计表格
+        if (ma5Data) {
+            const lastMA5 = ma5Data.filter(v => v !== null).pop();
+            document.getElementById('ma5Value').textContent = lastMA5?.toFixed(2);
+            const lastClose = stockData[stockData.length - 1].close;
+            const ma5Status = lastClose > lastMA5 ? '强势' : '弱势';
+            document.getElementById('ma5Status').textContent = ma5Status;
+            document.getElementById('ma5Status').style.color = ma5Status === '强势' ? 'red' : 'green';
+            document.getElementById('ma5Interpret').textContent = `股价${ma5Status === '强势' ? '位于' : '跌破'}MA5，短期趋势${ma5Status}`;
+        }
+
+        if (rsiData) {
+            const lastRSI = rsiData.filter(v => v !== null).pop();
+            document.getElementById('rsiValue').textContent = lastRSI?.toFixed(2);
+            let rsiStatus = '中性';
+            if (lastRSI > 70) rsiStatus = '超买';
+            else if (lastRSI < 30) rsiStatus = '超卖';
+            document.getElementById('rsiStatus').textContent = rsiStatus;
+            document.getElementById('rsiInterpret').textContent = `RSI为${lastRSI?.toFixed(2)}，市场处于${rsiStatus}状态`;
+        }
+
+        if (difData && deaData) {
+            const lastDif = difData.filter(v => v !== null).pop();
+            const lastDea = deaData.filter(v => v !== null).pop();
+            document.getElementById('macdValue').textContent = `DIF:${lastDif?.toFixed(2)}, DEA:${lastDea?.toFixed(2)}`;
+            const macdStatus = lastDif > lastDea ? '金叉' : '死叉';
+            document.getElementById('macdStatus').textContent = macdStatus;
+            document.getElementById('macdInterpret').textContent = `DIF${macdStatus === '金叉' ? '上穿' : '下穿'}DEA，形成${macdStatus}形态`;
+        }
+
+        // 生成投资建议
+        const advice = [];
+        const lastClose = stockData[stockData.length - 1].close;
+        const lastPE = basicData[0].pe;
+
+        if (rsiData) {
+            const lastRSI = rsiData.filter(v => v !== null).pop();
+            if (lastRSI < 30) {
+                advice.push('RSI指标显示市场处于超卖状态，可能存在反弹机会，可关注买入时机。');
+            } else if (lastRSI > 70) {
+                advice.push('RSI指标显示市场处于超买状态，需注意回调风险，建议谨慎操作。');
+            }
+        }
+
+        if (lastPE > 80) {
+            advice.push(`当前市盈率PE为${lastPE.toFixed(2)}，处于较高水平，估值偏贵，建议等待回调后再考虑介入。`);
+        } else if (lastPE < 50) {
+            advice.push(`当前市盈率PE为${lastPE.toFixed(2)}，处于相对合理水平，具有一定投资价值。`);
+        }
+
+        document.getElementById('investmentAdvice').innerHTML = advice.join('<br><br>') || '基于当前技术指标和估值水平，建议投资者保持谨慎，结合自身风险承受能力做出决策。';
+    </script>
+</body>
+</html>
