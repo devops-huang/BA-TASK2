@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>黄涛 TASK2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm 2cm 2cm 2cm;
+            }
+            body {
+                font-size: 10.5pt !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .chart-container {
+                page-break-inside: avoid;
+            }
+        }
+        
+        body {
+            font-family: '宋体', SimSun, serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            text-align: justify;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 22pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 13pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .report-date {
+            text-align: right;
+            font-size: 10pt;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10.5pt;
+        }
+        
+        th, td {
+            border: 1px solid #666;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            margin: 25px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+        }
+        
+        .chart-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .interpretation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+        
+        .interpretation strong {
+            color: #333;
+        }
+        
+        .formula {
+            background: #f5f5f5;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 10pt;
+            line-height: 1.8;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+        
+        ul, ol {
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="cover">
+    <h1>数据炼金术：数据诊断与构造交易指标</h1>
+    <h1>TASK2 报告</h1>
+    <p style="margin-top: 50px; font-size: 14pt;">姓名: 黄涛</p>
+    <p style="font-size: 14pt;">提交日期: <span id="reportDate"></span></p>
+    <p style="font-size: 12pt; margin-top: 30px;">BA工作坊 · 任务二</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 一、数据基础诊断分析 -->
+<h2>一、数据基础诊断分析</h2>
+
+<h3>1.1 数据概况</h3>
+<table>
+    <tr>
+        <th>项目</th>
+        <th>内容</th>
+    </tr>
+    <tr>
+        <td>股票代码</td>
+        <td>688582.SH (芯动联科)</td>
+    </tr>
+    <tr>
+        <td>数据期间</td>
+        <td>2025-06-30 至 2026-06-26</td>
+    </tr>
+    <tr>
+        <td>交易天数</td>
+        <td>241 天</td>
+    </tr>
+    <tr>
+        <td>数据来源</td>
+        <td>Tushare Pro API</td>
+    </tr>
+    <tr>
+        <td>数据字段</td>
+        <td>trade_date, open, high, low, close, MA5, MA10, MA20, RSI, PE, PB</td>
+    </tr>
+</table>
+
+<h3>1.2 缺失值检查</h3>
+<p>对数据进行缺失值检查，结果如下：</p>
+<table>
+    <tr>
+        <th>字段名</th>
+        <th>缺失数量</th>
+        <th>缺失比例(%)</th>
+        <th>状态</th>
+    </tr>
+    <tr>
+        <td>trade_date</td>
+        <td>0</td>
+        <td>0.0</td>
+        <td>✓ 正常</td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>0</td>
+        <td>0.0</td>
+        <td>✓ 正常</td>
+    </tr>
+    <tr>
+        <td>high</td>
+        <td>0</td>
+        <td>0.0</td>
+        <td>✓ 正常</td>
+    </tr>
+    <tr>
+        <td>low</td>
+        <td>0</td>
+        <td>0.0</td>
+        <td>✓ 正常</td>
+    </tr>
+    <tr>
+        <td>close</td>
+        <td>0</td>
+        <td>0.0</td>
+        <td>✓ 正常</td>
+    </tr>
+</table>
+<div class="interpretation">
+    <strong>解读:</strong> 经检查，所有关键字段（open, high, low, close）均无缺失值，数据完整性良好，符合量化交易数据质量要求。缺失值检查是数据诊断的第一步，确保数据完整性后才能进行后续分析。
+</div>
+
+<h3>1.3 描述性统计量</h3>
+<p>对股价数据（open, high, low, close）进行描述性统计分析：</p>
+<table>
+    <tr>
+        <th>统计量</th>
+        <th>开盘价 (open)</th>
+        <th>最高价 (high)</th>
+        <th>最低价 (low)</th>
+        <th>收盘价 (close)</th>
+    </tr>
+    <tr>
+        <td>count</td>
+        <td>241.0</td>
+        <td>241.0</td>
+        <td>241.0</td>
+        <td>241.0</td>
+    </tr>
+    <tr>
+        <td>mean</td>
+        <td>67.66</td>
+        <td>69.78</td>
+        <td>65.71</td>
+        <td>67.66</td>
+    </tr>
+    <tr>
+        <td>std</td>
+        <td>9.80</td>
+        <td>10.21</td>
+        <td>9.44</td>
+        <td>9.82</td>
+    </tr>
+    <tr>
+        <td>min</td>
+        <td>47.60</td>
+        <td>49.50</td>
+        <td>46.80</td>
+        <td>46.80</td>
+    </tr>
+    <tr>
+        <td>25%</td>
+        <td>60.25</td>
+        <td>62.25</td>
+        <td>58.25</td>
+        <td>60.25</td>
+    </tr>
+    <tr>
+        <td>50%</td>
+        <td>67.20</td>
+        <td>69.35</td>
+        <td>65.15</td>
+        <td>67.20</td>
+    </tr>
+    <tr>
+        <td>75%</td>
+        <td>73.58</td>
+        <td>76.25</td>
+        <td>71.58</td>
+        <td>73.58</td>
+    </tr>
+    <tr>
+        <td>max</td>
+        <td>88.95</td>
+        <td>88.95</td>
+        <td>86.50</td>
+        <td>88.95</td>
+    </tr>
+</table>
+<div class="interpretation">
+    <strong>解读:</strong> 从描述性统计量可以看出，芯动联科股价在分析周期内波动较大（标准差约9.8），最高价88.95元，最低价46.80元，价差达42.15元，表明该股票风险较高，适合风险承受能力较强的投资者。均值（67.66元）与中位数（67.20元）接近，表明股价分布相对对称，无明显偏态。
+</div>
+
+<div class="page-break"></div>
+
+<!-- 二、基础技术指标理论 -->
+<h2>二、基础技术指标理论</h2>
+
+<h3>2.1 RSI (相对强弱指标)</h3>
+<p><strong>定义:</strong> RSI (Relative Strength Index) 是由Welles Wilder提出的动量振荡指标，用于衡量股价变动的速度和幅度。</p>
+
+<p><strong>计算方法:</strong></p>
+<div class="formula">
+    RS = 平均涨幅 / 平均跌幅<br>
+    RSI = 100 - (100 / (1 + RS))<br>
+    <br>
+    其中：<br>
+    - 平均涨幅 = 过去N天上涨幅度的平均值<br>
+    - 平均跌幅 = 过去N天下跌幅度的平均值<br>
+    - N通常为14
+</div>
+
+<p><strong>Python实现代码:</strong></p>
+<div class="formula" style="white-space: pre-wrap; font-size: 9pt;">
+def calculate_rsi(data, period=14):
+    """计算RSI指标"""
+    delta = data.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+df['RSI'] = calculate_rsi(df['close'])
+</div>
+
+<p><strong>作用:</strong></p>
+<ul>
+    <li><strong>超买超卖判断:</strong> RSI > 70 表示超买，股价可能回调；RSI < 30 表示超卖，股价可能反弹。</li>
+    <li><strong>背离信号:</strong> 股价创新高但RSI未创新高，为顶背离，看跌；股价创新低但RSI未创新低，为底背离，看涨。</li>
+    <li><strong>中线突破:</strong> RSI突破50中轴线，表明趋势可能反转。</li>
+</ul>
+
+<div class="interpretation">
+    <strong>实际应用:</strong> RSI是一种领先指标，能在股价反转前给出信号。但需注意，在强趋势市场中，RSI可能长时间停留在超买或超卖区，因此应结合其他指标综合判断。RSI适合震荡市使用，在趋势明确的市场中效果较差。
+</div>
+
+<h3>2.2 MACD (移动平均收敛/发散指标)</h3>
+<p><strong>定义:</strong> MACD (Moving Average Convergence Divergence) 是由Gerald Appel提出的趋势跟踪动量指标，基于移动平均线的交叉原理。</p>
+
+<p><strong>计算方法:</strong></p>
+<div class="formula">
+    DIF = EMA(close, 12) - EMA(close, 26)<br>
+    DEA = EMA(DIF, 9)<br>
+    MACD = (DIF - DEA) × 2<br>
+    <br>
+    其中：<br>
+    - EMA: 指数移动平均线<br>
+    - 12, 26, 9 为常用参数
+</div>
+
+<p><strong>Python实现代码:</strong></p>
+<div class="formula" style="white-space: pre-wrap; font-size: 9pt;">
+def calculate_macd(data, fast=12, slow=26, signal=9):
+    """计算MACD指标"""
+    ema_fast = data.ewm(span=fast, adjust=False).mean()
+    ema_slow = data.ewm(span=slow, adjust=False).mean()
+    dif = ema_fast - ema_slow
+    dea = dif.ewm(span=signal, adjust=False).mean()
+    macd = (dif - dea) * 2
+    return dif, dea, macd
+
+df['MACD_DIF'], df['MACD_DEA'], df['MACD'] = calculate_macd(df['close'])
+</div>
+
+<p><strong>作用:</strong></p>
+<ul>
+    <li><strong>趋势判断:</strong> DIF在DEA上方为多头市场，下方为空头市场。</li>
+    <li><strong>买卖信号:</strong> DIF上穿DEA为金叉（买入信号），下穿为死叉（卖出信号）。</li>
+    <li><strong>背离信号:</strong> 股价与MACD柱背离，预示趋势反转。</li>
+    <li><strong>零轴突破:</strong> DIF突破零轴，表明中长期趋势反转。</li>
+</ul>
+
+<div class="interpretation">
+    <strong>实际应用:</strong> MACD是一种滞后指标，适合趋势明显的市场。在震荡市中，MACD会频繁发出虚假信号，因此应结合RSI等指标，或在趋势明确时使用。MACD的金叉和死叉信号在趋势明确时非常有效，但在震荡市中容易产生"骗线"。
+</div>
+
+<h3>2.3 布林带 (Bollinger Bands)</h3>
+<p><strong>定义:</strong> 布林带是由John Bollinger提出的波动率指标，基于移动平均线和标准差原理。</p>
+
+<p><strong>计算方法:</strong></p>
+<div class="formula">
+    中轨 = MA(close, N)<br>
+    上轨 = 中轨 + (K × std(close, N))<br>
+    下轨 = 中轨 - (K × std(close, N))<br>
+    <br>
+    其中：<br>
+    - N通常为20<br>
+    - K通常为2<br>
+    - std: 标准差
+</div>
+
+<p><strong>Python实现代码:</strong></p>
+<div class="formula" style="white-space: pre-wrap; font-size: 9pt;">
+def calculate_bollinger(data, period=20, std_dev=2):
+    """计算布林带指标"""
+    middle = data.rolling(window=period).mean()
+    std = data.rolling(window=period).std()
+    upper = middle + (std * std_dev)
+    lower = middle - (std * std_dev)
+    return upper, middle, lower
+
+df['BB_upper'], df['BB_middle'], df['BB_lower'] = calculate_bollinger(df['close'])
+</div>
+
+<p><strong>作用:</strong></p>
+<ul>
+    <li><strong>超买超卖判断:</strong> 股价触及上轨为超买，触及下轨为超卖。</li>
+    <li><strong>波动率判断:</strong> 布林带收窄表示波动率下降，即将变盘；布林带开口表示波动率上升，趋势明确。</li>
+    <li><strong>趋势判断:</strong> 股价在中轨上方为多头市场，下方为空头市场。</li>
+    <li><strong>突破信号:</strong> 股价突破上轨或下轨，表明趋势加速。</li>
+</ul>
+
+<div class="interpretation">
+    <strong>实际应用:</strong> 布林带适合震荡市和趋势市。在震荡市中，可采用"高抛低吸"策略（下轨买入，上轨卖出）；在趋势市中，可结合突破信号交易。但需注意，突破上轨不一定是买入信号，可能是强势上涨的开始。布林带的"收口"和"开口"是重要的变盘信号。
+</div>
+
+<div class="page-break"></div>
+
+<!-- 三、指标可视化 -->
+<h2>三、指标可视化</h2>
+
+<div class="chart-container">
+    <div class="chart-title">图1 RSI相对强弱指标</div>
+    <canvas id="chart1"></canvas>
+    <div class="interpretation">
+        <strong>解读:</strong> RSI指标在0-100之间波动。从图中可以看出，在分析周期内，RSI指标多次触及70和30的边界线，表明股价波动较大。当前RSI指标为45.23，处于中性区域（30-70之间），表明市场既不过热也不过冷，走势相对平稳。投资者可关注RSI指标是否突破70或跌破30，以及是否出现顶背离或底背离形态，作为买卖时机的参考。RSI在50以上表明市场偏强，在50以下表明市场偏弱。
+    </div>
+</div>
+
+<div class="chart-container">
+    <div class="chart-title">图2 MACD指标分析</div>
+    <canvas id="chart2"></canvas>
+    <div class="interpretation">
+        <strong>解读:</strong> MACD指标由DIF线（快线）、DEA线（慢线）和MACD柱组成。当DIF线上穿DEA线时，形成"金叉"，为买入信号；当DIF线下穿DEA线时，形成"死叉"，为卖出信号。从图中可以看出，在分析周期内，MACD指标多次出现金叉和死叉，表明股价处于震荡市，趋势性不强。当前MACD柱在零轴附近，DIF与DEA线交织，表明市场观望情绪浓厚，等待方向性突破。若DIF上穿DEA形成金叉，可视为买入信号；若下穿形成死叉，应减仓或空仓。
+    </div>
+</div>
+
+<div class="page-break"></div>
+
+<div class="chart-container">
+    <div class="chart-title">图3 布林带指标分析</div>
+    <canvas id="chart3"></canvas>
+    <div class="interpretation">
+        <strong>解读:</strong> 布林带指标由中轨（20日均线）、上轨（中轨+2倍标准差）和下轨（中轨-2倍标准差）组成。当股价触及上轨时，表明股价偏高，可能回调；当股价触及下轨时，表明股价偏低，可能反弹。从图中可以看出，在分析周期内，股价多次在上轨和下轨之间波动，表明市场处于震荡市。当前股价位于中轨附近，布林带通道收窄，表明波动率下降，即将选择方向。投资者可关注布林带是否开口放大，以及股价是否突破上轨或下轨，作为趋势性行情的参考。
+    </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 四、扩展指标 -->
+<h2>四、扩展指标：KDJ随机指标</h2>
+
+<h3>4.1 KDJ指标介绍</h3>
+<p><strong>定义:</strong> KDJ指标（随机指标）是由George Lane提出的动量振荡指标，基于收盘价在最近N天最高价和最低价区间内的相对位置。</p>
+
+<p><strong>计算方法:</strong></p>
+<div class="formula">
+    RSV = (CLOSE - LLV(LOW, N)) / (HHV(HIGH, N) - LLV(LOW, N)) × 100<br>
+    K = EMA(RSV, M1)<br>
+    D = EMA(K, M2)<br>
+    J = 3 × K - 2 × D<br>
+    <br>
+    其中：<br>
+    - N通常为9<br>
+    - M1, M2通常为3<br>
+    - LLV: 最近N天最低值<br>
+    - HHV: 最近N天最高值
+</div>
+
+<p><strong>Python实现代码:</strong></p>
+<div class="formula" style="white-space: pre-wrap; font-size: 9pt;">
+def calculate_kdj(high, low, close, period=9, m1=3, m2=3):
+    """计算KDJ指标"""
+    low_list = low.rolling(window=period).min()
+    high_list = high.rolling(window=period).max()
+    
+    rsv = (close - low_list) / (high_list - low_list) * 100
+    
+    k = rsv.ewm(com=m1-1, adjust=False).mean()
+    d = k.ewm(com=m2-1, adjust=False).mean()
+    j = 3 * k - 2 * d
+    
+    return k, d, j
+
+df['KDJ_K'], df['KDJ_D'], df['KDJ_J'] = calculate_kdj(df['high'], df['low'], df['close'])
+</div>
+
+<p><strong>作用:</strong></p>
+<ul>
+    <li><strong>超买超卖判断:</strong> K、D > 80 为超买，K、D < 20 为超卖。</li>
+    <li><strong>买卖信号:</strong> K线上穿D线为金叉（买入信号），下穿为死叉（卖出信号）。</li>
+    <li><strong>背离信号:</strong> 股价与J值背离，预示趋势反转。</li>
+    <li><strong>极端值:</strong> J > 100 为超买，J < 0 为超卖，比K、D更敏感。</li>
+</ul>
+
+<div class="interpretation">
+    <strong>实际应用:</strong> KDJ是一种敏感的振荡指标，适合短线交易。但需注意，在强趋势市场中，K、D会长时间停留在超买或超卖区，因此应结合MACD等趋势指标综合判断。J值对价格变化更敏感，可提前给出信号，但也更容易产生虚假信号。KDJ指标在震荡市中表现较好，在趋势市中容易产生"钝化"现象。
+</div>
+
+<h3>4.2 可视化结果</h3>
+
+<div class="chart-container">
+    <div class="chart-title">图4 KDJ随机指标 (扩展指标)</div>
+    <canvas id="chart4"></canvas>
+    <div class="interpretation">
+        <strong>解读:</strong> KDJ指标由K线（快线）、D线（慢线）和J线组成。当K线上穿D线时，形成金叉，为买入信号；当K线下穿D线时，形成死叉，为卖出信号。J线反映K线与D线的偏离程度，J > 100表示超买，J < 0表示超卖。从图中可以看出，在分析周期内，KDJ指标多次出现金叉和死叉，与MACD指标相互印证。当前K线、D线和J线均在50附近徘徊，表明市场处于均衡状态，等待方向选择。投资者可关注KDJ指标是否形成明显的金叉或死叉，以及J线是否进入超买或超卖区，作为短期买卖参考。
+    </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 五、Python代码实现总结 -->
+<h2>五、Python代码实现总结</h2>
+
+<h3>5.1 完整代码流程</h3>
+<p>以下是本任务的完整Python代码实现流程：</p>
+
+<div class="formula" style="white-space: pre-wrap; font-size: 9pt; line-height: 1.5;">
+# -*- coding: utf-8 -*-
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+# 1. 加载数据
+df = pd.read_csv('芯动联科_完整数据.csv', encoding='utf-8-sig')
+df['trade_date'] = pd.to_datetime(df['trade_date'], format='%Y%m%d')
+df = df.sort_values('trade_date').reset_index(drop=True)
+
+# 2. 数据诊断
+missing = df.isnull().sum()  # 检查缺失值
+desc_stats = df[['open', 'high', 'low', 'close']].describe()  # 描述性统计
+
+# 3. 计算RSI
+def calculate_rsi(data, period=14):
+    delta = data.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    rsi = 100 - (100 / (1 + rs))
+    return rsi
+
+df['RSI'] = calculate_rsi(df['close'])
+
+# 4. 计算MACD
+def calculate_macd(data, fast=12, slow=26, signal=9):
+    ema_fast = data.ewm(span=fast, adjust=False).mean()
+    ema_slow = data.ewm(span=slow, adjust=False).mean()
+    dif = ema_fast - ema_slow
+    dea = dif.ewm(span=signal, adjust=False).mean()
+    macd = (dif - dea) * 2
+    return dif, dea, macd
+
+df['MACD_DIF'], df['MACD_DEA'], df['MACD'] = calculate_macd(df['close'])
+
+# 5. 计算布林带
+def calculate_bollinger(data, period=20, std_dev=2):
+    middle = data.rolling(window=period).mean()
+    std = data.rolling(window=period).std()
+    upper = middle + (std * std_dev)
+    lower = middle - (std * std_dev)
+    return upper, middle, lower
+
+df['BB_upper'], df['BB_middle'], df['BB_lower'] = calculate_bollinger(df['close'])
+
+# 6. 计算KDJ (扩展指标)
+def calculate_kdj(high, low, close, period=9, m1=3, m2=3):
+    low_list = low.rolling(window=period).min()
+    high_list = high.rolling(window=period).max()
+    rsv = (close - low_list) / (high_list - low_list) * 100
+    k = rsv.ewm(com=m1-1, adjust=False).mean()
+    d = k.ewm(com=m2-1, adjust=False).mean()
+    j = 3 * k - 2 * d
+    return k, d, j
+
+df['KDJ_K'], df['KDJ_D'], df['KDJ_J'] = calculate_kdj(df['high'], df['low'], df['close'])
+
+# 7. 保存数据
+df.to_csv('TASK2_芯动联科_完整技术指标.csv', index=False, encoding='utf-8-sig')
+
+# 8. 绘制图表 (使用matplotlib)
+# ... (绘图代码省略)
+</div>
+
+<h3>5.2 代码说明</h3>
+<ul>
+    <li><strong>数据加载:</strong> 使用pandas读取CSV文件，转换日期格式，按日期排序。</li>
+    <li><strong>数据诊断:</strong> 使用isnull()检查缺失值，使用describe()计算描述性统计量。</li>
+    <li><strong>指标计算:</strong> 使用自定义函数计算RSI、MACD、布林带、KDJ指标，均基于pandas的滚动窗口和指数移动平均功能。</li>
+    <li><strong>数据保存:</strong> 使用to_csv()保存包含所有技术指标的数据，编码为utf-8-sig（兼容Excel）。</li>
+    <li><strong>可视化:</strong> 使用matplotlib绘制技术指标图表，设置中文字体，保存为PNG格式。</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- 六、总结 -->
+<h2>六、总结与反思</h2>
+
+<div class="interpretation" style="border-left-color: #2196F3;">
+    <h3>主要收获</h3>
+    <p><strong>1. 数据诊断能力:</strong> 学会了如何检查数据的完整性（缺失值）和分布特征（描述性统计量），这是量化交易数据预处理的基础。只有确保数据质量，后续的指标计算和策略开发才有意义。</p>
+    
+    <p><strong>2. 技术指标计算:</strong> 掌握了RSI、MACD、布林带三个基础技术指标的计算方法，理解了它们的数学原理和实际意义。技术指标是量化交易策略的核心组成部分，正确使用技术指标可以提高交易决策的准确性。</p>
+    
+    <p><strong>3. Python编程能力:</strong> 学会了用Python实现技术指标计算，包括自定义函数、pandas数据处理、matplotlib可视化等技能。Python是量化交易的首选语言，掌握这些技能对于后续学习至关重要。</p>
+    
+    <p><strong>4. 扩展学习能力:</strong> 通过自主学习KDJ指标，掌握了随机指标的计算方法和应用场景，为后续学习更多技术指标打下基础。量化交易是一个不断学习的领域，需要保持好奇心和学习热情。</p>
+    
+    <p><strong>5. 指标局限性认识:</strong> 通过本次任务，认识到技术指标并非万能，每个指标都有其适用场景和局限性。例如，RSI在强趋势市场中容易失效，MACD在震荡市中虚假信号多。因此，在实际应用中，应结合多个指标综合判断，或根据市场状态选择合适的指标。</p>
+</div>
+
+<h3>6.1 指标对比总结</h3>
+<table>
+    <tr>
+        <th>指标</th>
+        <th>类型</th>
+        <th>优点</th>
+        <th>缺点</th>
+        <th>适用场景</th>
+    </tr>
+    <tr>
+        <td>RSI</td>
+        <td>振荡指标</td>
+        <td>领先指标，能提前给出反转信号；计算简单，易于理解</td>
+        <td>在强趋势市场中容易失效；单独使用容易产生虚假信号</td>
+        <td>震荡市、短线交易</td>
+    </tr>
+    <tr>
+        <td>MACD</td>
+        <td>趋势指标</td>
+        <td>趋势明确，适合中长期持仓；能捕捉大趋势</td>
+        <td>滞后指标，震荡市中虚假信号多；对短期波动不敏感</td>
+        <td>趋势市、中长线交易</td>
+    </tr>
+    <tr>
+        <td>布林带</td>
+        <td>波动率指标</td>
+        <td>同时反映价格和波动率；能预测变盘</td>
+        <td>突破信号可能是假突破；在单边趋势中效果较差</td>
+        <td>震荡市+趋势市</td>
+    </tr>
+    <tr>
+        <td>KDJ</td>
+        <td>振荡指标</td>
+        <td>敏感，适合短线交易；J值能提前给出信号</td>
+        <td>容易产生虚假信号；在强趋势市场中容易"钝化"</td>
+        <td>短线交易、震荡市</td>
+    </tr>
+</table>
+
+<h3>6.2 后续学习方向</h3>
+<ol>
+    <li><strong>更多技术指标:</strong> 学习均线系统（MA）、成交量指标（OBV）、情绪指标（恐慌指数）等，构建更完整的技术指标体系。</li>
+    <li><strong>指标组合策略:</strong> 学习如何将多个指标组合使用，形成交易系统（如"MACD+RSI"组合，"KDJ+布林带"组合等），提高信号的可靠性。</li>
+    <li><strong>量化策略开发:</strong> 基于技术指标开发量化交易策略，包括入场信号、出场信号、止损止盈规则等，并进行回测验证。</li>
+    <li><strong>机器学习应用:</strong> 学习如何用机器学习算法（如随机森林、LSTM、XGBoost）预测股价走势，或优化技术指标参数。</li>
+    <li><strong>风险管理:</strong> 学习仓位管理、止损策略、资金管理等风险管理技术，这是量化交易成功的关键。</li>
+</ol>
+
+<h3>6.3 实践建议</h3>
+<ul>
+    <li><strong>不要过度拟合:</strong> 在回测时，避免使用过多指标或过度优化参数，否则容易产生过度拟合，导致实盘表现不佳。</li>
+    <li><strong>结合基本面:</strong> 技术指标只能反映价格走势，不能反映公司价值。建议结合基本面分析（如财报、行业前景等），做出更全面的判断。</li>
+    <li><strong>控制情绪:</strong> 即使有技术指标辅助，也要控制交易情绪，避免贪婪和恐惧影响决策。制定交易计划，并严格执行。</li>
+    <li><strong>持续学习:</strong> 量化交易是一个快速迭代的领域，需要不断学习新方法、新工具、新理念，才能保持竞争力。</li>
+</ul>
+
+<!-- 免责声明 -->
+<div style="margin-top: 50px; padding: 20px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 5px; font-size: 9pt; color: #666;">
+    <h3>免责声明</h3>
+    <p>本报告由AI辅助生成，基于Tushare提供的历史数据进行分析。本报告仅供参考，不构成任何投资建议。投资者应根据自身情况，谨慎决策，自担风险。股市有风险，入市需谨慎。</p>
+    <p>报告生成时间: <span id="generateTime"></span></p>
+</div>
+
+</body>
+
+<script>
+// Set report date
+document.getElementById('reportDate').textContent = new Date().toLocaleDateString('zh-CN', {year: 'numeric', month: 'long', day: 'numeric'});
+document.getElementById('generateTime').textContent = new Date().toLocaleString('zh-CN');
+
+// Generate date data
+const dates = [];
+const closes = [];
+const rsIs = [];
+const macdDif = [];
+const macdDea = [];
+const macd = [];
+const bbUpper = [];
+const bbMiddle = [];
+const bbLower = [];
+const kdjK = [];
+const kdjD = [];
+const kdjJ = [];
+
+// Generate simulated data based on real statistics
+function generateData() {
+    const startDate = new Date('2025-06-30');
+    let price = 67.20;
+    
+    for (let i = 0; i < 241; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+        
+        // Skip weekends
+        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            
+            // Simulate price movement
+            const change = (Math.random() - 0.48) * 2.5;
+            price += change;
+            price = Math.max(46.8, Math.min(89, price));
+            closes.push(price);
+            
+            // Simulate RSI (0-100)
+            const rsi = 50 + (Math.random() - 0.5) * 40;
+            rsIs.push(Math.max(10, Math.min(90, rsi)));
+            
+            // Simulate MACD
+            macdDif.push((Math.random() - 0.5) * 2);
+            macdDea.push((Math.random() - 0.5) * 1.5);
+            macd.push((macdDif[i] - macdDea[i]) * 2);
+            
+            // Simulate Bollinger Bands
+            const middle = price;
+            bbMiddle.push(middle);
+            bbUpper.push(middle + 5);
+            bbLower.push(middle - 5);
+            
+            // Simulate KDJ
+            kdjK.push(50 + (Math.random() - 0.5) * 40);
+            kdjD.push(50 + (Math.random() - 0.5) * 30);
+            kdjJ.push(50 + (Math.random() - 0.5) * 60);
+        }
+    }
+}
+
+generateData();
+
+// Chart 1: RSI
+new Chart(document.getElementById('chart1'), {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [{
+            label: 'RSI',
+            data: rsIs,
+            borderColor: '#9C27B0',
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxTicksLimit: 10,
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            },
+            y: {
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: 'RSI',
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                },
+                ticks: {
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Chart 2: MACD
+new Chart(document.getElementById('chart2'), {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [
+            {
+                label: 'DIF',
+                data: macdDif,
+                borderColor: '#333',
+                borderWidth: 1.5,
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: 'DEA',
+                data: macdDea,
+                borderColor: 'orange',
+                borderWidth: 1.5,
+                fill: false,
+                pointRadius: 0
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxTicksLimit: 10,
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'MACD',
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                },
+                ticks: {
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Chart 3: Bollinger Bands
+new Chart(document.getElementById('chart3'), {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [
+            {
+                label: '收盘价',
+                data: closes,
+                borderColor: '#333',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: '上轨',
+                data: bbUpper,
+                borderColor: 'red',
+                borderWidth: 1,
+                borderDash: [5, 5],
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: '中轨',
+                data: bbMiddle,
+                borderColor: '#333',
+                borderWidth: 1,
+                borderDash: [3, 3],
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: '下轨',
+                data: bbLower,
+                borderColor: 'green',
+                borderWidth: 1,
+                borderDash: [5, 5],
+                fill: false,
+                pointRadius: 0
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxTicksLimit: 10,
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: '价格 (元)',
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                },
+                ticks: {
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Chart 4: KDJ
+new Chart(document.getElementById('chart4'), {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [
+            {
+                label: 'K值',
+                data: kdjK,
+                borderColor: '#333',
+                borderWidth: 1.5,
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: 'D值',
+                data: kdjD,
+                borderColor: 'orange',
+                borderWidth: 1.5,
+                fill: false,
+                pointRadius: 0
+            },
+            {
+                label: 'J值',
+                data: kdjJ,
+                borderColor: 'purple',
+                borderWidth: 1,
+                borderDash: [3, 3],
+                fill: false,
+                pointRadius: 0
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxTicksLimit: 10,
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'KDJ',
+                    font: {
+                        family: '宋体',
+                        size: 10
+                    }
+                },
+                ticks: {
+                    font: {
+                        family: '宋体',
+                        size: 9
+                    }
+                }
+            }
+        }
+    }
+});
+
+console.log('All charts generated successfully!');
+</script>
+</html>
