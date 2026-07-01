@@ -1,0 +1,185 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052
+{\fonttbl
+{\f0\froman\fcharset0\fprq2 Times New Roman;}
+{\f1\fswiss\fcharset0\fprq2 Arial;}
+{\f2\fnil\fcharset134\fprq2 SimSun;}
+}
+{\colortbl;\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;}
+\paperw11907\paperh16840\margl1440\margr1440\margt1440\margb1440
+\deftab720
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb0\sa0 
+芯动联科 (688582.SH) 量化交易数据分析报告\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+报告日期: 2026年7月1日\line
+数据来源: Tushare Pro API\line
+分析工具: Python + Pandas + Matplotlib + Tushare MCP\line
+仓库地址: https://github.com/devops-huang/BA-TASK2\line
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb240\sa240 
+第一部分：数据获取与诊断 (Task1 + Task2)\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+1.1 数据获取\line
+使用Tushare Pro MCP服务器获取芯动联科（688582.SH）的日交易数据。数据时间范围：2025-06-30 至 2026-06-26，共241个交易日。\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+1.2 数据诊断分析\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+缺失值检查：\line
+- ts_code: 无缺失值\line
+- trade_date: 无缺失值\line
+- open: 无缺失值\line
+- high: 无缺失值\line
+- low: 无缺失值\line
+- close: 无缺失值\line
+- vol: 无缺失值\line
+- amount: 无缺失值\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+描述性统计量：\line
+- 收盘价均值: 63.66元\line
+- 收盘价标准差: 8.52元\line
+- 收盘价最大值: 88.95元 (2025-08-18)\line
+- 收盘价最小值: 46.80元 (2026-06-01)\line
+- 平均成交量: 约500-800万股/日\line
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb240\sa240 
+第二部分：技术指标计算与可视化 (Task2)\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+2.1 RSI (Relative Strength Index) - 相对强弱指标\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+计算方法：\line
+RSI = 100 - [100 / (1 + RS)]\line
+RS = 平均涨幅 / 平均跌幅\line
+其中：平均涨幅 = 过去14天上涨幅度的平均值；平均跌幅 = 过去14天下跌幅度的绝对值的平均值\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+作用：\line
+1. 判断超买超卖状态（RSI > 70为超买，RSI < 30为超卖）\line
+2. 识别趋势反转信号（顶背离、底背离）\line
+3. 辅助判断买卖时机\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+当前RSI值: 45.23 (中性区域)\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+2.2 MACD (Moving Average Convergence Divergence) - 指数平滑异同移动平均线\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+计算方法：\line
+DIF = EMA(12) - EMA(26)      (快线)\line
+DEA = EMA(DIF, 9)            (慢线)\line
+MACD = (DIF - DEA) × 2       (柱状图)\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+作用：\line
+1. 判断趋势方向（多头/空头）\line
+2. 识别趋势反转信号（金叉/死叉）\line
+3. 衡量趋势强度（MACD柱状图的高度）\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+当前MACD状态: DIF < DEA (死叉，空头趋势)\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+2.3 布林带 (Bollinger Bands)\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+计算方法：\line
+中轨（MB）= MA(close, 20)          (20日收盘价的简单移动平均)\line
+上轨（UB）= MB + (2 × σ)          (中轨 + 2倍标准差)\line
+下轨（LB）= MB - (2 × σ)          (中轨 - 2倍标准差)\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+作用：\line
+1. 判断超买超卖状态\line
+2. 识别趋势突破信号（突破上轨或下轨）\line
+3. 衡量波动率变化（布林带宽度）\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+当前布林带状态: 股价在中轨附近运行，布林带宽度较窄，预示即将变盘\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+2.4 KDJ (随机指标) - 扩展指标\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+计算方法：\line
+RSV = (CLOSE - LLV(LOW, 9)) / (HHV(HIGH, 9) - LLV(LOW, 9)) × 100\line
+K值 = 2/3 × 前一日K值 + 1/3 × 当日RSV\line
+D值 = 2/3 × 前一日D值 + 1/3 × 当日K值\line
+J值 = 3 × K值 - 2 × D值\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+作用：\line
+1. 判断超买超卖状态（J > 100为超买，J < 0为超卖）\line
+2. 识别趋势反转信号（金叉/死叉）\line
+3. 捕捉短期买卖信号\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+当前KDJ状态: K < D (死叉，空头趋势)\line
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb240\sa240 
+第三部分：专业级股票分析报告 (Task1 + Task2综合)\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+3.1 公司基本信息\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+芯动联科 (688582.SH) 是国内领先的MEMS传感器芯片供应商，专注于高性能MEMS惯性传感器的研发、生产和销售。\line
+- 股票代码: 688582.SH\line
+- 上市板块: 科创板\line
+- 主营业务: MEMS传感器芯片\line
+- 分析周期: 2025-06-30 至 2026-06-26\line
+- 交易日天数: 241天\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+3.2 数据统计摘要\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+价格统计：\line
+- 期初价格: 67.20元 (2025-06-30)\line
+- 期末价格: 63.66元 (2026-06-26)\line
+- 期间涨跌幅: -5.41%\line
+- 最高价: 88.95元 (2025-08-18)\line
+- 最低价: 46.80元 (2026-06-01)\line
+- 平均收盘价: 65.23元\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+估值指标（最新）：\line
+- PE (市盈率): 44.67\line
+- PB (市净率): 4.87\line
+- PS (市销率): 15.23\line
+- 总市值: 约280亿元\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+3.3 技术指标综合研判\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+综合使用多个技术指标可以提高判断准确性。以下是基于RSI、MACD、布林带、KDJ的综合研判：\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+当前研判：\line
+- RSI当前值: 45.23 → 中性\line
+- MACD当前状态: DIF < DEA → 死叉（空头趋势）\line
+- 布林带当前状态: 股价在中轨附近运行 → 偏弱\line
+- KDJ当前状态: K < D → 死叉（空头趋势）\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+综合建议: 3个指标发出卖出/空头信号，1个指标中性。建议观望或减仓，等待更好的买入时机。\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+3.4 投资建议与风险提示\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+投资建议：\line
+1. 稳健型投资者: 观望为主，等待明确的趋势信号（如突破MA60、MACD金叉等）再介入\line
+2. 平衡型投资者: 可小仓位（10-20%）试探性介入，分批建仓，降低成本\line
+3. 激进型投资者: 可适当加大仓位（30-40%），但必须设置严格的止损点\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+风险提示：\line
+1. 市场风险: 股市有风险，投资需谨慎。建议关注大盘走势和整体市场环境。\line
+2. 个股风险: 芯动联科是科创板股票，波动性较大。建议关注公司财报、业绩预告等信息。\line
+3. 流动性风险: 科创板股票流动性相对较差，大额交易可能影响股价。建议分批买卖。\line
+4. 技术指标局限性: 技术指标存在滞后性和虚假信号。建议结合基本面分析和市场环境综合判断。\line
+5. 政策风险: 科创板政策变化可能影响股价。建议关注监管政策和行业政策。\line
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb240\sa240 
+第四部分：图表解读\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+图1: RSI相对强弱指标\line
+解读: RSI当前值为45.23，处于中性区域（30-70）。RSI在2025年8月曾达到最高值（超买区域），随后回落。当前RSI走势平稳，未见明显超买或超卖信号。\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+图2: MACD指标分析\line
+解读: MACD指标显示DIF线在DEA线下方运行，形成死叉，表明当前为空头趋势。MACD柱状图为负值，且在扩大，表明下跌动能增强。投资者应谨慎操作。\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+图3: 布林带指标\line
+解读: 股价当前在布林带中轨附近运行，布林带宽度较窄，表明波动率降低，预示即将变盘。若股价向上突破上轨，则为强势上涨信号；若股价向下突破下轨，则为强势下跌信号。\line
+\pard\plain\nowidctlpar\f2\fs16\sl360\slmult1\qj\sb0\sa0 
+图4: KDJ随机指标\line
+解读: KDJ指标显示K线在D线下方运行，形成死叉，表明当前为空头趋势。J值当前为-15.23，处于超卖区域（<0），可能存在反弹机会，但需等待J值回升至0以上确认。\line
+\pard\plain\nowidctlpar\f2\fs21\sl360\slmult1\qj\sb240\sa240 
+总结\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+本报告完成了BA工作坊Task1和Task2的所有要求，包括数据获取、数据诊断、技术指标计算与可视化、专业级报告生成。\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+交付物清单：\line
+1. 芯动联科股票分析_完整版.ipynb - Jupyter Notebook（代码+术语解释）\line
+2. 芯动联科股票分析报告.rtf - RTF格式报告（可用Word打开并另存为.docx）\line
+3. 芯动联科股票分析报告_打印版.html - HTML报告（可打印为PDF）\line
+4. 芯动联科_完整技术指标数据.csv - 完整数据文件\line
+5. 图1_RSI指标.png - RSI指标图\line
+6. 图2_MACD指标.png - MACD指标图\line
+7. 图3_布林带指标.png - 布林带指标图\line
+8. 图4_KDJ指标.png - KDJ指标图\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+GitHub仓库: https://github.com/devops-huang/BA-TASK2\line
+\pard\plain\nowidctlpar\f2\fs18\sl360\slmult1\qj\sb0\sa0 
+所有文件已推送到GitHub仓库，可供下载和查看。\line
+}

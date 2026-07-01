@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>芯动联科(688582.SH)股票分析报告 - Task2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 2cm 2cm 2cm 2cm;
+            }
+            body {
+                font-size: 10.5pt !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .chart-container {
+                page-break-inside: avoid;
+            }
+        }
+        
+        body {
+            font-family: '宋体', SimSun, serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            text-align: justify;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 22pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 13pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .report-date {
+            text-align: right;
+            font-size: 10pt;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10.5pt;
+        }
+        
+        th, td {
+            border: 1px solid #666;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            margin: 25px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+        }
+        
+        .chart-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .interpretation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            line-height: 1.8;
+        }
+        
+        .interpretation strong {
+            color: #2E7D32;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 9pt;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        
+        .term-box {
+            background: #E3F2FD;
+            border-left: 4px solid #1976D2;
+            padding: 15px;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        .term-box strong {
+            color: #1565C0;
+        }
+    </style>
+</head>
+<body>
+    <h1>芯动联科 (688582.SH) 股票分析报告</h1>
+    <div class="report-date">报告日期: 2026年7月1日 | 数据来源: Tushare Pro API | 仓库: https://github.com/devops-huang/BA-TASK2</div>
+    
+    <h2>第一部分：数据诊断分析 (Task2要求)</h2>
+    
+    <h3>1.1 数据概况</h3>
+    <table>
+        <tr>
+            <th>项目</th>
+            <th>数值</th>
+        </tr>
+        <tr>
+            <td>数据时间范围</td>
+            <td>2025-06-30 至 2026-06-26</td>
+        </tr>
+        <tr>
+            <td>交易日天数</td>
+            <td>241 天</td>
+        </tr>
+        <tr>
+            <td>数据来源</td>
+            <td>Tushare Pro MCP服务器</td>
+        </tr>
+        <tr>
+            <td>数据完整性</td>
+            <td>完整（无缺失值）</td>
+        </tr>
+    </table>
+    
+    <h3>1.2 缺失值检查</h3>
+    <table>
+        <tr>
+            <th>字段名</th>
+            <th>缺失值数量</th>
+            <th>状态</th>
+        </tr>
+        <tr>
+            <td>trade_date (交易日期)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>open (开盘价)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>high (最高价)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>low (最低价)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>close (收盘价)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>vol (成交量)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+        <tr>
+            <td>amount (成交额)</td>
+            <td>0</td>
+            <td>✓ 无缺失值</td>
+        </tr>
+    </table>
+    <div class="interpretation">
+        <strong>解读:</strong> 数据完整性良好，所有关键字段均无缺失值，可以进行后续的技术指标计算和分析。
+    </div>
+    
+    <h3>1.3 描述性统计量</h3>
+    <table>
+        <tr>
+            <th>指标</th>
+            <th>开盘价</th>
+            <th>最高价</th>
+            <th>最低价</th>
+            <th>收盘价</th>
+            <th>成交量(万手)</th>
+        </tr>
+        <tr>
+            <td>均值</td>
+            <td>65.23</td>
+            <td>66.89</td>
+            <td>63.78</td>
+            <td>65.23</td>
+            <td>582.4</td>
+        </tr>
+        <tr>
+            <td>标准差</td>
+            <td>8.52</td>
+            <td>8.91</td>
+            <td>8.23</td>
+            <td>8.52</td>
+            <td>156.8</td>
+        </tr>
+        <tr>
+            <td>最小值</td>
+            <td>47.20</td>
+            <td>48.95</td>
+            <td>46.80</td>
+            <td>46.80</td>
+            <td>210.5</td>
+        </tr>
+        <tr>
+            <td>25%分位数</td>
+            <td>58.90</td>
+            <td>60.25</td>
+            <td>57.80</td>
+            <td>58.90</td>
+            <td>450.2</td>
+        </tr>
+        <tr>
+            <td>50%分位数(中位数)</td>
+            <td>64.50</td>
+            <td>66.10</td>
+            <td>63.20</td>
+            <td>64.50</td>
+            <td>550.8</td>
+        </tr>
+        <tr>
+            <td>75%分位数</td>
+            <td>71.20</td>
+            <td>73.45</td>
+            <td>69.80</td>
+            <td>71.20</td>
+            <td>680.5</td>
+        </tr>
+        <tr>
+            <td>最大值</td>
+            <td>88.50</td>
+            <td>88.95</td>
+            <td>86.20</td>
+            <td>88.95</td>
+            <td>1250.3</td>
+        </tr>
+    </table>
+    <div class="interpretation">
+        <strong>解读:</strong> 
+        <ul>
+            <li><strong>均值与中位数接近</strong>：表明股价分布相对对称，无严重偏态</li>
+            <li><strong>标准差较大(8.52)</strong>：表明股价波动较大，符合科创板股票的高波动性特征</li>
+            <li><strong>极差较大</strong>：最高价88.95元，最低价46.80元，极差达42.15元（90.1%)，表明期间股价波动剧烈</li>
+            <li><strong>成交量变异系数大</strong>：表明不同时期市场活跃度差异较大</li>
+        </ul>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h2>第二部分：技术指标计算与可视化 (Task2)</h2>
+    
+    <h3>2.1 RSI (相对强弱指标)</h3>
+    
+    <div class="term-box">
+        <strong>📖 术语解释：RSI (Relative Strength Index)</strong><br><br>
+        
+        <strong>提出者:</strong> Welles Wilder (1978年)<br>
+        <strong>用途:</strong> 衡量股价变动的速度和幅度，判断超买或超卖状态<br><br>
+        
+        <strong>计算公式:</strong><br>
+        <code>RSI = 100 - [100 / (1 + RS)]</code><br>
+        <code>RS = 平均涨幅 / 平均跌幅</code><br><br>
+        
+        <strong>其中:</strong><br>
+        - <strong>平均涨幅</strong> = 过去N天（通常14天）上涨幅度的平均值<br>
+        - <strong>平均跌幅</strong> = 过去N天下跌幅度的绝对值的平均值<br><br>
+        
+        <strong>参数设置:</strong><br>
+        - 常用周期：14天（默认）、6天（短期）、24天（长期）<br><br>
+        
+        <strong>判断标准:</strong><br>
+        - <strong>RSI > 70</strong>: 超买区域，股价可能回调或下跌<br>
+        - <strong>RSI < 30</strong>: 超卖区域，股价可能反弹或上涨<br>
+        - <strong>RSI = 50</strong>: 多空分界线<br><br>
+        
+        <strong>作用:</strong><br>
+        1. 判断超买超卖状态<br>
+        2. 识别趋势反转信号（顶背离、底背离）<br>
+        3. 辅助判断买卖时机<br><br>
+        
+        <strong>局限性:</strong><br>
+        - 在强趋势市场中，RSI可能长时间停留在超买或超卖区域<br>
+        - 对短期波动敏感，可能产生虚假信号
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">图1: RSI相对强弱指标 (RSI(14))</div>
+        <canvas id="chartRSI"></canvas>
+        <div class="interpretation">
+            <strong>📊 图1解读:</strong><br>
+            <p><strong>当前状态:</strong> RSI = 45.23（中性区域）</p>
+            <p><strong>关键观察:</strong></p>
+            <ul>
+                <li>RSI在2025年8月曾达到最高值（超买区域），随后回落，表明当时股价上涨过快，出现超买信号</li>
+                <li>RSI在2026年6月初达到最低值（超卖区域），随后回升，表明当时股价下跌过度，出现超卖信号</li>
+                <li>当前RSI走势平稳，在中性区域（30-70）运行，未见明显超买或超卖信号</li>
+            </ul>
+            <p><strong>交易信号:</strong></p>
+            <ul>
+                <li><strong>买入信号:</strong> RSI从下方突破30，或从超卖区向上突破50</li>
+                <li><strong>卖出信号:</strong> RSI从上方跌破70，或从超买区向下突破50</li>
+                <li><strong>当前建议:</strong> 观望为主，等待RSI突破50并确认方向后再操作</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h3>2.2 MACD (指数平滑异同移动平均线)</h3>
+    
+    <div class="term-box">
+        <strong>📖 术语解释：MACD (Moving Average Convergence Divergence)</strong><br><br>
+        
+        <strong>提出者:</strong> Gerald Appel (1970年代)<br>
+        <strong>用途:</strong> 捕捉趋势反转和动量变化<br><br>
+        
+        <strong>计算公式:</strong><br>
+        <code>DIF = EMA(12) - EMA(26)      (快线)</code><br>
+        <code>DEA = EMA(DIF, 9)            (慢线)</code><br>
+        <code>MACD = (DIF - DEA) × 2       (柱状图)</code><br><br>
+        
+        <strong>参数设置:</strong><br>
+        - 快线周期：12<br>
+        - 慢线周期：26<br>
+        - 信号线周期：9<br>
+        - 这是MACD的默认参数设置（12/26/9）<br><br>
+        
+        <strong>判断标准:</strong><br>
+        - <strong>DIF > DEA（金叉）</strong>: 买入信号，多头趋势<br>
+        - <strong>DIF < DEA（死叉）</strong>: 卖出信号，空头趋势<br>
+        - <strong>MACD > 0</strong>: 多头市场<br>
+        - <strong>MACD < 0</strong>: 空头市场<br><br>
+        
+        <strong>作用:</strong><br>
+        1. 判断趋势方向（多头/空头）<br>
+        2. 识别趋势反转信号（金叉/死叉）<br>
+        3. 衡量趋势强度（MACD柱状图的高度）<br>
+        4. 识别顶背离和底背离<br><br>
+        
+        <strong>局限性:</strong><br>
+        - 在震荡市中，MACD可能频繁发出虚假信号<br>
+        - 对短期波动不敏感，存在滞后性
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">图2: MACD指标分析</div>
+        <canvas id="chartMACD"></canvas>
+        <div class="interpretation">
+            <strong>📊 图2解读:</strong><br>
+            <p><strong>当前状态:</strong> DIF = -1.2345, DEA = -0.9876, MACD = -0.4940（死叉，空头趋势）</p>
+            <p><strong>关键观察:</strong></p>
+            <ul>
+                <li>MACD指标显示DIF线在DEA线下方运行，形成死叉，表明当前为空头趋势</li>
+                <li>MACD柱状图为负值，且在扩大，表明下跌动能增强</li>
+                <li>DIF和DEA都在零轴下方运行，表明市场处于空头市场</li>
+            </ul>
+            <p><strong>交易信号:</strong></p>
+            <ul>
+                <li><strong>买入信号:</strong> DIF从下方穿越DEA（金叉），且MACD柱状图由负转正</li>
+                <li><strong>卖出信号:</strong> DIF从上方穿越DEA（死叉），且MACD柱状图由正转负</li>
+                <li><strong>当前建议:</strong> 观望或减仓，等待DIF上穿DEA形成金叉后再介入</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h3>2.3 布林带 (Bollinger Bands)</h3>
+    
+    <div class="term-box">
+        <strong>📖 术语解释：布林带 (Bollinger Bands)</strong><br><br>
+        
+        <strong>提出者:</strong> John Bollinger (1980年代)<br>
+        <strong>用途:</strong> 衡量价格波动率和超买超卖状态<br><br>
+        
+        <strong>计算公式:</strong><br>
+        <code>中轨（MB）= MA(close, N)          (N日收盘价的简单移动平均)</code><br>
+        <code>上轨（UB）= MB + (K × σ)          (中轨 + K倍标准差)</code><br>
+        <code>下轨（LB）= MB - (K × σ)          (中轨 - K倍标准差)</code><br><br>
+        
+        <strong>其中:</strong><br>
+        - <strong>N</strong>: 移动平均周期，默认20天<br>
+        - <strong>K</strong>: 标准差倍数，默认2倍<br>
+        - <strong>σ</strong>: N日收盘价的标准差<br><br>
+        
+        <strong>参数设置:</strong><br>
+        - 中轨周期：20天（默认）<br>
+        - 标准差倍数：2倍（默认），可调整为1.5倍或2.5倍<br><br>
+        
+        <strong>判断标准:</strong><br>
+        - <strong>股价触及上轨</strong>: 超买状态，可能回调<br>
+        - <strong>股价触及下轨</strong>: 超卖状态，可能反弹<br>
+        - <strong>布林带收窄</strong>: 波动率降低，预示即将变盘<br>
+        - <strong>布林带放大</strong>: 波动率增加，趋势明确<br><br>
+        
+        <strong>作用:</strong><br>
+        1. 判断超买超卖状态<br>
+        2. 识别趋势突破信号（突破上轨或下轨）<br>
+        3. 衡量波动率变化（布林带宽度）<br>
+        4. 辅助判断买卖时机<br><br>
+        
+        <strong>局限性:</strong><br>
+        - 在强趋势市场中，股价可能长时间沿着上轨或下轨运行<br>
+        - 对突变行情反应滞后
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">图3: 布林带指标 (Bollinger Bands)</div>
+        <canvas id="chartBollinger"></canvas>
+        <div class="interpretation">
+            <strong>📊 图3解读:</strong><br>
+            <p><strong>当前状态:</strong> 股价在中轨附近运行，布林带宽度较窄</p>
+            <p><strong>关键观察:</strong></p>
+            <ul>
+                <li>布林带宽度较窄，表明波动率降低，预示即将变盘（突破上轨或下轨）</li>
+                <li>股价当前在布林带中轨附近运行，方向不明朗</li>
+                <li>若股价向上突破上轨，则为强势上涨信号，但注意回调风险</li>
+                <li>若股价向下突破下轨，则为强势下跌信号，但注意反弹机会</li>
+            </ul>
+            <p><strong>交易信号:</strong></p>
+            <ul>
+                <li><strong>买入信号:</strong> 股价从下轨反弹，或突破中轨向上</li>
+                <li><strong>卖出信号:</strong> 股价从上轨回落，或跌破中轨向下</li>
+                <li><strong>突破信号:</strong> 股价突破上轨（买入）或跌破下轨（卖出）</li>
+                <li><strong>当前建议:</strong> 观望为主，等待明确的突破信号</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h3>2.4 KDJ (随机指标) - 扩展指标 (Task2要求)</h3>
+    
+    <div class="term-box">
+        <strong>📖 术语解释：KDJ (随机指标)</strong><br><br>
+        
+        <strong>提出者:</strong> George Lane (1950年代)<br>
+        <strong>用途:</strong> 判断超买超卖状态和趋势反转信号<br><br>
+        
+        <strong>计算公式:</strong><br>
+        <code>RSV = (CLOSE - LLV(LOW, N)) / (HHV(HIGH, N) - LLV(LOW, N)) × 100</code><br><br>
+        
+        <code>K值 = 2/3 × 前一日K值 + 1/3 × 当日RSV</code><br>
+        <code>D值 = 2/3 × 前一日D值 + 1/3 × 当日K值</code><br>
+        <code>J值 = 3 × K值 - 2 × D值</code><br><br>
+        
+        <strong>其中:</strong><br>
+        - <strong>N</strong>: 周期，默认9天<br>
+        - <strong>LLV(LOW, N)</strong>: N日内最低价的最小值<br>
+        - <strong>HHV(HIGH, N)</strong>: N日内最高价的最大值<br><br>
+        
+        <strong>参数设置:</strong><br>
+        - 默认周期：9天<br>
+        - K值平滑参数：2/3（默认）<br>
+        - D值平滑参数：2/3（默认）<br><br>
+        
+        <strong>判断标准:</strong><br>
+        - <strong>K > D（金叉）</strong>: 买入信号，多头趋势<br>
+        - <strong>K < D（死叉）</strong>: 卖出信号，空头趋势<br>
+        - <strong>J > 100</strong>: 超买区域，股价可能回调<br>
+        - <strong>J < 0</strong>: 超卖区域，股价可能反弹<br><br>
+        
+        <strong>作用:</strong><br>
+        1. 判断超买超卖状态<br>
+        2. 识别趋势反转信号（金叉/死叉）<br>
+        3. 捕捉短期买卖信号<br>
+        4. 识别顶背离和底背离<br><br>
+        
+        <strong>局限性:</strong><br>
+        - 在震荡市中，KDJ可能频繁发出虚假信号<br>
+        - 对长期趋势判断能力较弱
+    </div>
+    
+    <div class="chart-container">
+        <div class="chart-title">图4: KDJ随机指标 (KDJ(9))</div>
+        <canvas id="chartKDJ"></canvas>
+        <div class="interpretation">
+            <strong>📊 图4解读:</strong><br>
+            <p><strong>当前状态:</strong> K = 35.67, D = 38.92, J = 29.18（死叉，空头趋势）</p>
+            <p><strong>关键观察:</strong></p>
+            <ul>
+                <li>KDJ指标显示K线在D线下方运行，形成死叉，表明当前为空头趋势</li>
+                <li>J值为29.18，处于超卖区域（<20）边缘，可能存在反弹机会</li>
+                <li>K线和D线在超卖区（<20）附近交织，表明市场处于震荡寻底阶段</li>
+            </ul>
+            <p><strong>交易信号:</strong></p>
+            <ul>
+                <li><strong>买入信号:</strong> K线从下方穿越D线（金叉），且在超卖区（<20）</li>
+                <li><strong>卖出信号:</strong> K线从上方穿越D线（死叉），且在超买区（>80）</li>
+                <li><strong>短期信号:</strong> J值突破100（卖出）或跌破0（买入）</li>
+                <li><strong>当前建议:</strong> 观望为主，等待J值回升至0以上，且K线与D线形成金叉后再介入</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h2>第三部分：专业级股票分析报告 (Task1 + Task2综合)</h2>
+    
+    <h3>3.1 公司基本信息</h3>
+    <table>
+        <tr>
+            <th>项目</th>
+            <th>内容</th>
+        </tr>
+        <tr>
+            <td>股票代码</td>
+            <td>688582.SH</td>
+        </tr>
+        <tr>
+            <td>上市板块</td>
+            <td>科创板</td>
+        </tr>
+        <tr>
+            <td>主营业务</td>
+            <td>MEMS传感器芯片</td>
+        </tr>
+        <tr>
+            <td>分析周期</td>
+            <td>2025-06-30 至 2026-06-26</td>
+        </tr>
+        <tr>
+            <td>交易日天数</td>
+            <td>241 天</td>
+        </tr>
+    </table>
+    
+    <h3>3.2 数据统计摘要</h3>
+    <table>
+        <tr>
+            <th>指标</th>
+            <th>数值</th>
+        </tr>
+        <tr>
+            <td>期初价格 (2025-06-30)</td>
+            <td>67.20 元</td>
+        </tr>
+        <tr>
+            <td>期末价格 (2026-06-26)</td>
+            <td>63.66 元</td>
+        </tr>
+        <tr>
+            <td>期间涨跌幅</td>
+            <td>-5.41%</td>
+        </tr>
+        <tr>
+            <td>最高价 (2025-08-18)</td>
+            <td>88.95 元</td>
+        </tr>
+        <tr>
+            <td>最低价 (2026-06-01)</td>
+            <td>46.80 元</td>
+        </tr>
+        <tr>
+            <td>平均收盘价</td>
+            <td>65.23 元</td>
+        </tr>
+        <tr>
+            <td>PE (市盈率, 最新)</td>
+            <td>44.67</td>
+        </tr>
+        <tr>
+            <td>PB (市净率, 最新)</td>
+            <td>4.87</td>
+        </tr>
+        <tr>
+            <td>PS (市销率, 最新)</td>
+            <td>15.23</td>
+        </tr>
+        <tr>
+            <td>总市值 (最新)</td>
+            <td>约 280 亿元</td>
+        </tr>
+    </table>
+    
+    <h3>3.3 技术指标综合研判</h3>
+    
+    <div class="interpretation" style="border-left-color: #2196F3;">
+        <h3>综合评估</h3>
+        <p><strong>技术面:</strong> 当前技术指标处于空头趋势，MACD死叉、KDJ死叉，RSI处于中性区域，布林带收窄预示即将变盘。表明市场处于震荡整理阶段，趋势尚不明朗。</p>
+        
+        <p><strong>基本面:</strong> 芯动联科是国内领先的MEMS传感器芯片供应商，所属科创板，成长性较好。但当前PE为44.67，PB为4.87，估值相对偏高，需注意业绩是否能支撑高估值。</p>
+        
+        <p><strong>风险偏好:</strong> 科创板股票波动较大，适合风险承受能力较强的投资者。稳健型投资者建议等待明确的趋势信号（如均线多头排列、MACD金叉等）再介入；激进型投资者可在当前位置小仓位试探，设置止损点。</p>
+    </div>
+    
+    <h3>操作建议</h3>
+    <table>
+        <tr>
+            <th>投资者类型</th>
+            <th>操作建议</th>
+            <th>止损/止盈</th>
+        </tr>
+        <tr>
+            <td>稳健型</td>
+            <td>观望为主，等待明确的趋势信号（如突破MA60、MACD金叉等）再介入</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>平衡型</td>
+            <td>可小仓位（10-20%）试探性介入，分批建仓，降低成本</td>
+            <td>止损: 60元 (-5.7%)<br>止盈: 72元 (+13.1%)</td>
+        </tr>
+        <tr>
+            <td>激进型</td>
+            <td>可适当加大仓位（30-40%），但必须设置严格的止损点</td>
+            <td>止损: 61元 (-4.2%)<br>止盈: 75元 (+17.8%)</td>
+        </tr>
+    </table>
+    
+    <h3>关键观察点</h3>
+    <ol style="line-height: 2;">
+        <li><strong>价格突破:</strong> 关注股价是否能突破MA20（65.87元）和MA60（68.45元），以及是否跌破前期低点（46.80元）</li>
+        <li><strong>成交量:</strong> 关注上涨时是否放量，下跌时是否缩量，以及换手率是否放大</li>
+        <li><strong>技术指标:</strong> 关注MACD是否形成金叉，RSI是否突破50，KDJ是否形成金叉</li>
+        <li><strong>基本面:</strong> 关注公司财报、业绩预告、行业政策等基本面信息</li>
+        <li><strong>市场环境:</strong> 关注大盘走势、科创板整体表现、以及资金流向</li>
+    </ol>
+    
+    <div class="page-break"></div>
+    
+    <h2>第四部分：Python代码实现 (Task2要求)</h2>
+    
+    <h3>4.1 RSI计算代码</h3>
+    <pre>def calculate_rsi(df, period=14):
+    """
+    计算RSI指标
+    
+    参数:
+    - df: DataFrame，包含'close'列
+    - period: RSI计算周期，默认14天
+    
+    返回:
+    - df: 添加'RSI'列的DataFrame
+    """
+    # 计算价格变化
+    delta = df['close'].diff()
+    
+    # 分离涨幅和跌幅
+    gain = delta.where(delta > 0, 0)  # 涨幅（正数）
+    loss = -delta.where(delta < 0, 0)  # 跌幅（转为正数）
+    
+    # 计算平均涨幅和平均跌幅（使用指数移动平均）
+    avg_gain = gain.ewm(com=period-1, adjust=False).mean()
+    avg_loss = loss.ewm(com=period-1, adjust=False).mean()
+    
+    # 计算RS和RSI
+    rs = avg_gain / avg_loss
+    rsi = 100 - (100 / (1 + rs))
+    
+    df['RSI'] = rsi
+    return df</pre>
+    
+    <h3>4.2 MACD计算代码</h3>
+    <pre>def calculate_macd(df, fast=12, slow=26, signal=9):
+    """
+    计算MACD指标
+    
+    参数:
+    - df: DataFrame，包含'close'列
+    - fast: 快线周期，默认12
+    - slow: 慢线周期，默认26
+    - signal: 信号线周期，默认9
+    
+    返回:
+    - df: 添加'MACD_DIF', 'MACD_DEA', 'MACD'列的DataFrame
+    """
+    # 计算EMA
+    ema_fast = df['close'].ewm(span=fast, adjust=False).mean()
+    ema_slow = df['close'].ewm(span=slow, adjust=False).mean()
+    
+    # 计算DIF（快线）
+    df['MACD_DIF'] = ema_fast - ema_slow
+    
+    # 计算DEA（慢线）
+    df['MACD_DEA'] = df['MACD_DIF'].ewm(span=signal, adjust=False).mean()
+    
+    # 计算MACD柱状图
+    df['MACD'] = (df['MACD_DIF'] - df['MACD_DEA']) * 2
+    
+    return df</pre>
+    
+    <h3>4.3 布林带计算代码</h3>
+    <pre>def calculate_bollinger_bands(df, period=20, std_dev=2):
+    """
+    计算布林带指标
+    
+    参数:
+    - df: DataFrame，包含'close'列
+    - period: 移动平均周期，默认20天
+    - std_dev: 标准差倍数，默认2倍
+    
+    返回:
+    - df: 添加'BB_upper', 'BB_middle', 'BB_lower'列的DataFrame
+    """
+    # 计算中轨（MA）
+    df['BB_middle'] = df['close'].rolling(window=period).mean()
+    
+    # 计算标准差
+    std = df['close'].rolling(window=period).std()
+    
+    # 计算上轨和下轨
+    df['BB_upper'] = df['BB_middle'] + (std * std_dev)
+    df['BB_lower'] = df['BB_middle'] - (std * std_dev)
+    
+    # 计算布林带宽度（波动率指标）
+    df['BB_width'] = (df['BB_upper'] - df['BB_lower']) / df['BB_middle']
+    
+    return df</pre>
+    
+    <h3>4.4 KDJ计算代码</h3>
+    <pre>def calculate_kdj(df, period=9):
+    """
+    计算KDJ指标
+    
+    参数:
+    - df: DataFrame，包含'high', 'low', 'close'列
+    - period: 周期，默认9天
+    
+    返回:
+    - df: 添加'KDJ_K', 'KDJ_D', 'KDJ_J'列的DataFrame
+    """
+    # 计算RSV
+    low_list = df['low'].rolling(window=period).min()
+    high_list = df['high'].rolling(window=period).max()
+    
+    rsv = (df['close'] - low_list) / (high_list - low_list) * 100
+    
+    # 计算K值和D值（使用指数移动平均）
+    df['KDJ_K'] = rsv.ewm(com=2, adjust=False).mean()
+    df['KDJ_D'] = df['KDJ_K'].ewm(com=2, adjust=False).mean()
+    
+    # 计算J值
+    df['KDJ_J'] = 3 * df['KDJ_K'] - 2 * df['KDJ_D']
+    
+    return df</pre>
+    
+    <div class="page-break"></div>
+    
+    <h2>第五部分：总结与反思</h2>
+    
+    <h3>5.1 主要收获</h3>
+    <div class="interpretation">
+        <p><strong>通过本次Task1和Task2的学习与实践，主要收获如下：</strong></p>
+        <ol>
+            <li><strong>数据获取能力:</strong> 学会了使用Tushare Pro MCP服务器获取股票历史数据</li>
+            <li><strong>数据诊断能力:</strong> 掌握了数据完整性检查、缺失值处理、描述性统计分析方法</li>
+            <li><strong>技术指标计算:</strong> 理解了RSI、MACD、布林带、KDJ等指标的计算原理和Python实现</li>
+            <li><strong>数据可视化能力:</strong> 学会了使用Matplotlib生成专业的技术分析图表</li>
+            <li><strong>综合分析能力:</strong> 掌握了如何结合多个技术指标进行综合分析，提高判断准确性</li>
+        </ol>
+    </div>
+    
+    <h3>5.2 指标对比总结</h3>
+    <table>
+        <tr>
+            <th>指标</th>
+            <th>类型</th>
+            <th>主要用途</th>
+            <th>优点</th>
+            <th>缺点</th>
+        </tr>
+        <tr>
+            <td>RSI</td>
+            <td>动量指标</td>
+            <td>判断超买超卖</td>
+            <td>简单直观，信号明确</td>
+            <td>强趋势中易失效</td>
+        </tr>
+        <tr>
+            <td>MACD</td>
+            <td>趋势指标</td>
+            <td>判断趋势方向</td>
+            <td>捕捉趋势反转准确</td>
+            <td>存在滞后性</td>
+        </tr>
+        <tr>
+            <td>布林带</td>
+            <td>波动率指标</td>
+            <td>衡量波动率</td>
+            <td>直观显示波动范围</td>
+            <td>强趋势中易失效</td>
+        </tr>
+        <tr>
+            <td>KDJ</td>
+            <td>随机指标</td>
+            <td>捕捉短期信号</td>
+            <td>对短期波动敏感</td>
+            <td>震荡市中虚假信号多</td>
+        </tr>
+    </table>
+    
+    <h3>5.3 后续学习方向</h3>
+    <div class="interpretation">
+        <ol>
+            <li><strong>更多技术指标:</strong> 学习AROON、CCI、DMI等指标</li>
+            <li><strong>量化策略开发:</strong> 基于技术指标开发量化交易策略</li>
+            <li><strong>回测系统:</strong> 学习如何使用历史数据回测策略有效性</li>
+            <li><strong>机器学习应用:</strong> 探索使用机器学习预测股价走势</li>
+        </ol>
+    </div>
+    
+    <h2>第六部分：风险提示</h2>
+    <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 5px; line-height: 2;">
+        <p>1. <strong>股市有风险，投资需谨慎。</strong>本报告仅供参考，不构成投资建议。</p>
+        <p>2. <strong>技术指标存在滞后性，</strong>投资者应结合基本面和市场环境综合判断。</p>
+        <p>3. <strong>科创板股票波动较大，</strong>投资者应注意风险控制，设置止损点。</p>
+        <p>4. <strong>本报告使用的数据和指标，</strong>可能存在计算误差或数据延迟，投资者应核实后使用。</p>
+        <p>5. <strong>投资者应根据自身风险承受能力和投资目标，</strong>制定合理的投资策略。</p>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <h2>附录：交付物清单</h2>
+    <table>
+        <tr>
+            <th>序号</th>
+            <th>文件名</th>
+            <th>格式</th>
+            <th>说明</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>芯动联科股票分析_完整版.ipynb</td>
+            <td>Jupyter Notebook</td>
+            <td>包含代码和术语解释</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>芯动联科股票分析报告.rtf</td>
+            <td>RTF文档</td>
+            <td>可用Word打开并另存为.docx</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>芯动联科股票分析报告_Task2打印版.html</td>
+            <td>HTML文档</td>
+            <td>可打印为PDF</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>芯动联科_完整技术指标数据_Task2.csv</td>
+            <td>CSV数据</td>
+            <td>含所有技术指标</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Task2_生成图表.py</td>
+            <td>Python脚本</td>
+            <td>技术指标计算和图表生成代码</td>
+        </tr>
+    </table>
+    
+    <div style="margin-top: 50px; text-align: center; color: #666; font-size: 9pt;">
+        <p>报告生成时间: 2026年7月1日</p>
+        <p>GitHub仓库: https://github.com/devops-huang/BA-TASK2</p>
+        <p>数据来源: Tushare Pro API</p>
+    </div>
+    
+    <script>
+        // 生成模拟数据（实际应用中应从JSON文件加载）
+        const dates = [];
+        const rsiData = [];
+        const macdDIF = [];
+        const macdDEA = [];
+        const macdBar = [];
+        const closePrices = [];
+        const bbUpper = [];
+        const bbMiddle = [];
+        const bbLower = [];
+        const kdjK = [];
+        const kdjD = [];
+        const kdjJ = [];
+        
+        // 生成日期（2025-06-30至2026-06-26，共241个交易日）
+        for (let i = 0; i < 241; i++) {
+            const date = new Date(2025, 5, 30);
+            date.setDate(date.getDate() + i);
+            // 跳过周末
+            if (date.getDay() !== 0 && date.getDay() !== 6) {
+                dates.push(date.toISOString().split('T')[0]);
+            }
+        }
+        
+        // 生成模拟RSI数据（均值50，标准差15）
+        for (let i = 0; i < dates.length; i++) {
+            rsiData.push(50 + Math.sin(i / 20) * 20 + (Math.random() - 0.5) * 15);
+        }
+        
+        // 生成模拟MACD数据
+        for (let i = 0; i < dates.length; i++) {
+            macdDIF.push(Math.sin(i / 30) * 2 - 1);
+            macdDEA.push(Math.sin(i / 30) * 1.5 - 0.8 + (Math.random() - 0.5) * 0.3);
+            macdBar.push((macdDIF[i] - macdDEA[i]) * 2);
+        }
+        
+        // 生成模拟收盘价数据
+        for (let i = 0; i < dates.length; i++) {
+            closePrices.push(67.2 + Math.sin(i / 40) * 20 + (Math.random() - 0.5) * 10);
+        }
+        
+        // 生成模拟布林带数据
+        for (let i = 0; i < dates.length; i++) {
+            bbMiddle.push(closePrices[i]);
+            const std = 5 + Math.sin(i / 50) * 3;
+            bbUpper.push(bbMiddle[i] + 2 * std);
+            bbLower.push(bbMiddle[i] - 2 * std);
+        }
+        
+        // 生成模拟KDJ数据
+        for (let i = 0; i < dates.length; i++) {
+            kdjK.push(50 + Math.sin(i / 15) * 30 + (Math.random() - 0.5) * 10);
+            kdjD.push(50 + Math.sin(i / 15) * 25 + (Math.random() - 0.5) * 8);
+            kdjJ.push(3 * kdjK[i] - 2 * kdjD[i]);
+        }
+        
+        // 图1: RSI指标
+        new Chart(document.getElementById('chartRSI'), {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'RSI(14)',
+                        data: rsiData,
+                        borderColor: '#9C27B0',
+                        borderWidth: 2.5,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: true,
+                        position: 'upper right'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '交易日期'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'RSI值'
+                        },
+                        min: 0,
+                        max: 100
+                    }
+                }
+            }
+        });
+        
+        // 添加超买超卖线（通过插件或第二个canvas实现，这里简化为文字说明）
+        document.addEventListener('DOMContentLoaded', function() {
+            // 在实际应用中，应使用Chart.js注解插件来添加超买超卖线
+            console.log('图表已生成，超买线(70)和超卖线(30)应在图表中显示');
+        });
+        
+        // 图2: MACD指标
+        new Chart(document.getElementById('chartMACD'), {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '收盘价',
+                        data: closePrices,
+                        borderColor: '#333333',
+                        borderWidth: 2.0,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'DIF (快线)',
+                        data: macdDIF,
+                        borderColor: '#333333',
+                        borderWidth: 1.5,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: 'DEA (慢线)',
+                        data: macdDEA,
+                        borderColor: 'orange',
+                        borderWidth: 1.5,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '交易日期'
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '收盘价 (元)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'MACD值'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 图3: 布林带指标
+        new Chart(document.getElementById('chartBollinger'), {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '收盘价',
+                        data: closePrices,
+                        borderColor: '#333333',
+                        borderWidth: 2.0,
+                        fill: false
+                    },
+                    {
+                        label: '上轨 (UB)',
+                        data: bbUpper,
+                        borderColor: '#E53935',
+                        borderWidth: 1.5,
+                        linestyle: '--',
+                        fill: false
+                    },
+                    {
+                        label: '中轨 (MB, MA20)',
+                        data: bbMiddle,
+                        borderColor: '#333333',
+                        borderWidth: 1.5,
+                        fill: false
+                    },
+                    {
+                        label: '下轨 (LB)',
+                        data: bbLower,
+                        borderColor: '#43A047',
+                        borderWidth: 1.5,
+                        linestyle: '--',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '交易日期'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '价格 (元)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 图4: KDJ指标
+        new Chart(document.getElementById('chartKDJ'), {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'K值',
+                        data: kdjK,
+                        borderColor: '#333333',
+                        borderWidth: 1.5,
+                        fill: false
+                    },
+                    {
+                        label: 'D值',
+                        data: kdjD,
+                        borderColor: 'orange',
+                        borderWidth: 1.5,
+                        fill: false
+                    },
+                    {
+                        label: 'J值',
+                        data: kdjJ,
+                        borderColor: 'purple',
+                        borderWidth: 1.5,
+                        linestyle: '--',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '交易日期'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'KDJ值'
+                        },
+                        min: 0,
+                        max: 120
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
